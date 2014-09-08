@@ -10,17 +10,20 @@
 #include <cppunit/TestResultCollector.h>
 #include <cppunit/TestRunner.h>
 #include <cppunit/BriefTestProgressListener.h>
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/XmlOutputter.h>
+#include <cppunit/CompilerOutputter.h> // For XML & Jenkins
+#include <cppunit/XmlOutputter.h>  //For Jenkins
 #include <netinet/in.h>
 
 #include "CBasicMath.hpp"
+
+// @Author Lars Veenendaal
+// Test class with tests and the runner.
 
 using namespace CppUnit;
 using namespace std;
 
 //-----------------------------------------------------------------------------
-
+// Test Class
 class TestBasicMath : public CppUnit::TestFixture
 {
     CPPUNIT_TEST_SUITE(TestBasicMath);
@@ -37,27 +40,26 @@ protected:
     void testMultiply(void);
 
 private:
-
-    CBasicMath *mTestObj;
+    CBasicMath *mTestObj; 
 };
 
 //-----------------------------------------------------------------------------
 
-void
-TestBasicMath::testAddition(void)
+void TestBasicMath::testAddition(void)
 {
+    // The result should be 5. addition 2+3.
     CPPUNIT_ASSERT(5 == mTestObj->Addition(2,3));
 }
 
-void
-TestBasicMath::testMultiply(void)
+void TestBasicMath::testMultiply(void)
 {
+    // The  Result should be 6. Multiply 2x3.
     CPPUNIT_ASSERT(6 == mTestObj->Multiply(2,3));
 }
 
 void TestBasicMath::setUp(void)
 {
-    mTestObj = new CBasicMath();
+    mTestObj = new CBasicMath();  // Create a testObject to use for testing.
 }
 
 void TestBasicMath::tearDown(void)
@@ -66,7 +68,7 @@ void TestBasicMath::tearDown(void)
 }
 
 //-----------------------------------------------------------------------------
-
+// The 'Runner'
 CPPUNIT_TEST_SUITE_REGISTRATION( TestBasicMath );
 
 int main(int argc, char* argv[])
@@ -91,6 +93,7 @@ int main(int argc, char* argv[])
     CPPUNIT_NS::CompilerOutputter compileroutputter(&collectedresults, std::cerr);
     compileroutputter.write ();
 
+    // For outputting testresults to XML to showcase the tests on jenkins.
     // Output XML for Jenkins CPPunit plugin
     ofstream xmlFileOut("cppTestBasicMathResults.xml");
     XmlOutputter xmlOut(&collectedresults, xmlFileOut);
